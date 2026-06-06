@@ -697,6 +697,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 /* ─── RESPONSIVE ─────────────────────────────────────────── */
 @media (max-width: 1100px) {
   .about-grid { grid-template-columns: 1fr; gap: 4rem; }
+  .about-right { padding-top: 0; }
   .h-card { width: 80vw; min-width: 80vw; }
   .h-card-more { width: 60vw; min-width: 60vw; }
   .pd-overview-grid { grid-template-columns: 1fr; gap: 2rem; }
@@ -704,6 +705,21 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   .pd-more-grid { grid-template-columns: 1fr; }
   .pd-features-grid { grid-template-columns: 1fr 1fr; }
   .ap-grid { grid-template-columns: 1fr 1fr; }
+  .about-globe-wrap { width: 85%; margin-left: auto; margin-right: auto; }
+}
+
+/* ── iPad / tablet portrait ── */
+@media (max-width: 900px) {
+  .hero-full { gap: 2rem; }
+  .hero-name { font-size: clamp(4rem, 11vw, 8rem); }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .services-grid { grid-template-columns: 1fr 1fr; }
+  .galaxy-section { height: 75vh; min-height: 500px; }
+  .h-card { width: 85vw; min-width: 85vw; }
+  .h-card-more { width: 70vw; min-width: 70vw; }
+  .pd-features-grid { grid-template-columns: 1fr 1fr; }
+  .ap-grid { grid-template-columns: 1fr 1fr; }
+  .contact-headline { font-size: clamp(2.5rem, 7vw, 5rem); }
 }
 
 /* ─── SPIRAL GALAXY SECTION ──────────────────────────────── */
@@ -1174,22 +1190,68 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 @media (max-width: 768px) {
   .nav-links, .nav-cta { display: none; }
   .hamburger { display: flex; }
-  .hero-name { font-size: clamp(3.5rem, 14vw, 6.5rem); }
+  .hero-name { font-size: clamp(3.2rem, 13vw, 6.5rem); }
   .hero-mid { grid-template-columns: 1fr; gap: 1.5rem; }
-  .hero-mid-right { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
+  .hero-mid-right { align-items: stretch; flex-direction: row; flex-wrap: wrap; gap: 0.75rem; }
+  .hero-mid-right .btn-primary,
+  .hero-mid-right .btn-ghost { flex: 1; min-width: 140px; justify-content: center; }
   .hero-year-bg { font-size: clamp(6rem, 28vw, 12rem); }
   .pd-name { font-size: clamp(2.8rem, 10vw, 5rem); }
   .pd-features-grid { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
-  .contact-headline { font-size: clamp(2.2rem, 9vw, 4rem); }
-  .services-grid { grid-template-columns: 1fr; }
+  .contact-headline { font-size: clamp(2rem, 8vw, 4rem); }
+  .contact-email { font-size: clamp(0.95rem, 3.5vw, 1.5rem); word-break: break-all; }
+  .contact-cta { flex-direction: column; align-items: stretch; }
+  .contact-cta .btn-primary,
+  .contact-cta .btn-ghost { width: 100%; justify-content: center; }
+  .services-grid { grid-template-columns: 1fr 1fr; }
   .ap-grid { grid-template-columns: 1fr; }
   .h-card { width: 90vw; min-width: 90vw; }
   .h-card-more { width: 80vw; min-width: 80vw; }
   .hero-meta-item { padding: 1rem 1.5rem 1rem 0; margin-right: 1.5rem; }
+  .about-globe-wrap { width: 80%; margin-left: auto; margin-right: auto; margin-top: 0; }
+  .galaxy-section { height: 65vh; min-height: 440px; }
+  .galaxy-overlay { bottom: 6%; }
+  .about { padding: 5rem 0; }
+  .skills { padding: 5rem 0 0; }
+  .contact { padding: 6rem 0; }
+  .projects-head-wrap { padding: 5rem 0 3rem; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
 }
 @media (max-width: 500px) {
+  .hero-name { font-size: clamp(2.8rem, 12.5vw, 4rem); }
   .hero-mid-right { flex-direction: column; }
-  .stats-grid { grid-template-columns: 1fr; }
+  .hero-mid-right .btn-primary,
+  .hero-mid-right .btn-ghost { width: 100%; min-width: unset; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .services-grid { grid-template-columns: 1fr; }
   .hero-meta-item { border-right: none; padding-right: 0; margin-right: 0; }
+  .hero-meta { flex-direction: column; }
+  .hero-meta-item { border-bottom: 1px solid var(--border); padding: 0.75rem 0; }
+  .hero-meta-item:last-child { border-bottom: none; }
+  .galaxy-section { height: 55vh; min-height: 380px; }
+  .section-title { font-size: clamp(2rem, 8.5vw, 3rem); }
+  .contact-headline { font-size: clamp(1.8rem, 8vw, 3rem); }
+  .h-card { width: 92vw; min-width: 92vw; }
+  .h-card-overlay { padding: 1.5rem 1.5rem; }
+  .pd-meta-row { gap: 1.5rem; }
+  .ap-grid-wrap { padding: 3rem clamp(1rem, 4vw, 2rem) 4rem; }
+}
+
+/* ── Small phones (iPhone SE, Galaxy A etc) ── */
+@media (max-width: 390px) {
+  .hero-name { font-size: clamp(2.4rem, 11.5vw, 3.2rem); }
+  .hero-badge { font-size: 0.68rem; }
+  .hero-desc { font-size: 0.88rem; }
+  .stat-num { font-size: 2.2rem; }
+  .contact-email-row { flex-direction: column; align-items: center; }
+  .cb-panel { width: calc(100vw - 1.5rem); right: 0.75rem; }
+  .cb-fab { right: 0.75rem; }
+}
+
+/* ── Landscape mobile ── */
+@media (max-width: 768px) and (orientation: landscape) {
+  .hero { min-height: 100svh; }
+  .galaxy-section { height: 100vw; min-height: 320px; }
+  .cb-panel { max-height: 85vh; bottom: 5rem; }
 }
