@@ -148,7 +148,7 @@ export default function ChatBot() {
     setInput('')
     setStreaming(true)
 
-    const messages = [{ role: 'system', content: SYSTEM_PROMPT }, ...history]
+    const payload = [{ role: 'system', content: SYSTEM_PROMPT }, ...history]
 
     // In production the key lives only in the Vercel function (/api/chat).
     // For local `npm run dev` (no serverless runtime) fall back to calling
@@ -168,7 +168,7 @@ export default function ChatBot() {
             },
             body: JSON.stringify({
               model: 'gpt-oss-120b',
-              messages,
+              messages: payload,
               max_tokens: 2048,
               temperature: 0.5,
               stream: true,
@@ -178,7 +178,7 @@ export default function ChatBot() {
             method: 'POST',
             signal: abortRef.current.signal,
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ messages }),
+            body: JSON.stringify({ messages: payload }),
           })
 
       if (res.status === 429 && attempt < 3) {
