@@ -1,31 +1,20 @@
-/*
- * Vercel Edge Function — proxies the chatbot to Cerebras.
- * The API key lives ONLY here (server-side env var CEREBRAS_API_KEY), so it
- * is never shipped to the browser. The client posts { messages } and gets the
- * streamed SSE response piped straight back.
- */
-export const config = { runtime: 'edge' }
-
-export default async function handler(req) {
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return new Response('Method not allowed', { status: 405 })
+    res.status(405).send('Method not allowed')
+    return
   }
 
   const apiKey = process.env.CEREBRAS_API_KEY
   if (!apiKey) {
-    return new Response('Server is missing CEREBRAS_API_KEY', { status: 500 })
+    res.status(500).send('Server is missing CEREBRAS_API_KEY')
+    return
   }
 
-  let messages
-  try {
-    const body = await req.json()
-    messages = body.messages
-  } catch {
-    return new Response('Invalid JSON body', { status: 400 })
-  }
+  const { messages } = req.body
 
   if (!Array.isArray(messages) || messages.length === 0) {
-    return new Response('messages[] is required', { status: 400 })
+    res.status(400).send('messages[] is required')
+    return
   }
 
   const upstream = await fetch('https://api.cerebras.ai/v1/chat/completions', {
@@ -43,13 +32,26 @@ export default async function handler(req) {
     }),
   })
 
-  // pass status + the SSE stream straight through to the browser
-  return new Response(upstream.body, {
-    status: upstream.status,
-    headers: {
-      'Content-Type': 'text/event-stream; charset=utf-8',
-      'Cache-Control': 'no-cache, no-transform',
-      Connection: 'keep-alive',
-    },
-  })
+  if (!upstream.ok) {
+    const body = await upstream.text()
+    res.status(upstream.status).send(body)
+    return
+  }
+
+  res.setHeader('Content-Type', 'text/event-stream; charset=utf-8')
+  res.setHeader('Cache-Control', 'no-cache, no-transform')
+  res.setHeader('Connection', 'keep-alive')
+
+  const reader = upstream.body.getReader()
+  const decoder = new TextDecoder()
+
+  try {
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      res.write(decoder.decode(value, { stream: true }))
+    }
+  } finally {
+    res.end()
+  }
 }
